@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SearchArticleRequest;
 use App\Http\Requests\UploadArticleRequest;
 use App\Models\Article;
 use App\Services\ArticlesServices;
@@ -29,7 +30,6 @@ class ArticlesController extends Controller
         return response()->json($result);
     }
 
-
     /**
      * This API is to get all articles
      *
@@ -38,6 +38,18 @@ class ArticlesController extends Controller
     public function articles()
     {
         $result = $this->articleService->getAllArticles();
+
+        return response()->json($result);
+    }
+
+    /**
+     * This API is to get an article based on criteria
+     *
+     * @return void
+     */
+    public function searchArticles(SearchArticleRequest $request)
+    {
+        $result = $this->articleService->searchArticles($request->search_key, $request->search_value);
 
         return response()->json($result);
     }

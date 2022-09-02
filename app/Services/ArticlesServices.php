@@ -46,4 +46,12 @@ class ArticlesServices
         ];
     }
 
+    public function searchArticles($key = null, $value= null){
+        $article = Article::where($key, $value)->first();
+
+        return [
+            'article' => $article
+        ];
+    }
+
 }
