@@ -19,4 +19,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('products/upload', [ArticlesController::class, 'uploadArticles']);
+Route::controller(ArticlesController::class)->group(function () {
+    Route::post('products/upload', 'uploadArticles');
+    Route::get('products', 'articles');
+    Route::post('products/search', 'articles');
+});

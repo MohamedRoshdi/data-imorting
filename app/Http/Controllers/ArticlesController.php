@@ -2,12 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Imports\ArticlesImport;
+use App\Http\Requests\UploadArticleRequest;
+use App\Models\Article;
+use App\Services\ArticlesServices;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Facades\Excel;
 
 class ArticlesController extends Controller
 {
+    private $articleService;
+
+    public function __construct(ArticlesServices $articleService)
+    {
+        $this->articleService = $articleService;
+    }
 
     /**
      * This API is to upload articles file.
@@ -15,13 +22,23 @@ class ArticlesController extends Controller
      * @param Request $request
      * @return void
      */
-    public function uploadArticles(Request $request){
-        Excel::import(new ArticlesImport, $request->file);
+    public function uploadArticles(UploadArticleRequest $request)
+    {
+        $result = $this->articleService->uploadArticles($request->file);
 
-        return response()->json([
-            'message' =>'Date uploaded successfully'
-        ]);
+        return response()->json($result);
     }
 
 
+    /**
+     * This API is to get all articles
+     *
+     * @return void
+     */
+    public function articles()
+    {
+        $result = $this->articleService->getAllArticles();
+
+        return response()->json($result);
+    }
 }
